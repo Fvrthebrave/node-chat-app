@@ -11,9 +11,14 @@ socket.on('disconnect', function(){
 // Listens for the emit of newMessage from the server..
 socket.on('newMessage', function(message){
     console.log(message);
+    
+    // Add list item containing message details to screen
     var li = $('<li></li>');
     li.text(`${message.from}: ${message.text}`);
     $('#messages').append(li);
+    
+    // Reset the input value to blank
+    $('[name=message]').val('');
 });
 
 // Listens for the emit of newLocation message from the server..
@@ -32,11 +37,12 @@ socket.on('newLocationMessage', function (message){
 $('#message-form').on('submit', function (e) {
     e.preventDefault();
     
+    // Emits 'createMessage' to the server when the form is submitted..
     socket.emit('createMessage', {
        from: "User",
        text: $('[name=message]').val()
-    }, function (data) {
-        console.log(data);
+    }, function () {
+        
     });
 });
 

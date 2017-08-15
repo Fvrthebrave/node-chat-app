@@ -4,7 +4,7 @@ const socketIO = require('socket.io');
 
 const path = require('path');
 const publicPath = path.join(__dirname, '../public');
-const port = process.env.PORT || 3000;
+const port = process.env.PORT;
 const {generateMessage, generateLocationMessage} = require('./utils/message');
 
 var app = express();
@@ -30,10 +30,12 @@ io.on('connection', function(socket){
         io.emit('newMessage', generateMessage(message.from, message.text));
         
         //Sends data to callback on client side
-        callback('This is from the server');
+        callback();
     });
     
     socket.on('createLocationMessage', function (coords) {
+        
+        // Sends out emit of newLocationMessage to the client..
         io.emit('newLocationMessage', generateLocationMessage('Admin', coords.latitude, coords.longitude));
     });
     
@@ -42,6 +44,6 @@ io.on('connection', function(socket){
     });
 });
 
-server.listen(port, process.env.IP, function(){
-   console.log(`Server is listening on ${port}`); 
+server.listen(process.env.PORT, process.env.IP, function(){
+   console.log('Server is listening!'); 
 });
