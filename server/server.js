@@ -30,7 +30,7 @@ io.on('connection', function(socket){
         io.emit('newMessage', generateMessage(message.from, message.text));
         
         //Sends data to callback on client side
-        callback();
+        callback('Received emit from client');
     });
     
     socket.on('createLocationMessage', function (coords) {

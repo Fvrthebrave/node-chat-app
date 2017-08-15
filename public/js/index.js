@@ -16,9 +16,6 @@ socket.on('newMessage', function(message){
     var li = $('<li></li>');
     li.text(`${message.from}: ${message.text}`);
     $('#messages').append(li);
-    
-    // Reset the input value to blank
-    $('[name=message]').val('');
 });
 
 // Listens for the emit of newLocation message from the server..
@@ -41,8 +38,11 @@ $('#message-form').on('submit', function (e) {
     socket.emit('createMessage', {
        from: "User",
        text: $('[name=message]').val()
-    }, function () {
+    }, function (data) {
+        console.log(data);
         
+        // Once confirmed server has received emit, reset the user's input.
+        $('[name=message]').val('');    
     });
 });
 
