@@ -5,7 +5,7 @@ var generateMessage = function (from, text){
     return {
         from,
         text,
-        createdAt: date.format('MMMM DD, YYYY')
+        createdAt: date.format('MMMM Do YYYY')
     };
 };
 
