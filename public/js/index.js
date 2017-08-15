@@ -10,28 +10,39 @@ socket.on('disconnect', function(){
 
 // Listens for the emit of newMessage from the server..
 socket.on('newMessage', function(message){
-    console.log(message);
+    
+    // Format value provided by generateMessage function..
+    var formattedTime = moment(message.createdAt).format('MMMM Do, YYYY (h:mm a)');
     
     // Add list item containing message details to screen
     var li = $('<li></li>');
     var span = $('<span class="date"></span>');
     li.text(`${message.from}: ${message.text}`);
-    span.text(`Sent on: ${message.createdAt}`);
-    span.css("color", "blue");
+    span.text(`Sent: ${formattedTime}`);
     
+    // Add new list item and it's children to the message section..
     li.append(span);
     $('#messages').append(li);
 });
 
 // Listens for the emit of newLocation message from the server..
 socket.on('newLocationMessage', function (message){
+    
+    // Format value provided by generateLocationMessage function..
+    var formattedTime = moment(message.createdAt).format('MMMM Do, YYYY (h:mm a)');
+    
     var li = $('<li></li>');
     var a = $('<a target="_blank">My current location</a>');
+    var span = $('<span class="date"></span>');
     
     li.text(`${message.from}: `);
     a.attr('href', message.url);
+    span.text(`Sent: ${formattedTime}`);
     
+    
+    // Add new list item and it's children to the message section..
     li.append(a);
+    li.append(span);
     $('#messages').append(li);
 });
 

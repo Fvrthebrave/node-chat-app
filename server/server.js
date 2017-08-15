@@ -28,13 +28,12 @@ io.on('connection', function(socket){
         
     // Listens for the emit of createMessage from the client..
     socket.on('createMessage', function(message, callback){
-        console.log('Created message ', message); 
            
         // Send out emit of newMessage to the client..
         io.emit('newMessage', generateMessage(message.from, message.text, message.createdAt));
         
         //Sends data to callback on client side
-        callback('Received emit from client');
+        callback('Received message request from client..');
     });
     
     socket.on('createLocationMessage', function (coords) {

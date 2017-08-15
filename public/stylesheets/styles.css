@@ -122,7 +122,6 @@ button:disabled {
 }
 
 .chat__messages {
-    background: lightgrey;
   flex-grow: 1;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
@@ -200,6 +199,6 @@ button:disabled {
 .date {
     display: block;
     font-size: 10px;
-    color: lightgrey;
+    color: grey;
     margin-bottom: 10px;
 }
