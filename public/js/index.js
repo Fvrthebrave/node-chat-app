@@ -14,7 +14,12 @@ socket.on('newMessage', function(message){
     
     // Add list item containing message details to screen
     var li = $('<li></li>');
+    var span = $('<span class="date"></span>');
     li.text(`${message.from}: ${message.text}`);
+    span.text(`Sent on: ${message.createdAt}`);
+    span.css("color", "blue");
+    
+    li.append(span);
     $('#messages').append(li);
 });
 

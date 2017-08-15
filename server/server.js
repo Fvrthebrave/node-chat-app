@@ -1,6 +1,10 @@
 const express = require('express');
 const http = require('http');
 const socketIO = require('socket.io');
+const moment = require('moment');
+const date = moment();
+
+console.log(date.format('MMMM DD, YYYY'));
 
 const path = require('path');
 const publicPath = path.join(__dirname, '../public');
@@ -27,7 +31,7 @@ io.on('connection', function(socket){
         console.log('Created message ', message); 
            
         // Send out emit of newMessage to the client..
-        io.emit('newMessage', generateMessage(message.from, message.text));
+        io.emit('newMessage', generateMessage(message.from, message.text, message.createdAt));
         
         //Sends data to callback on client side
         callback('Received emit from client');

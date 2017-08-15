@@ -1,8 +1,11 @@
+const moment = require('moment');
+const date = moment();
+
 var generateMessage = function (from, text){
     return {
         from,
         text,
-        createdAt: new Date().getTime()
+        createdAt: date.format('MMMM DD, YYYY')
     };
 };
 
