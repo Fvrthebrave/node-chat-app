@@ -23,11 +23,15 @@ io.on('connection', function(socket){
     socket.broadcast.emit('newMessage', generateMessage("Admin", "New user connected.."));
         
     // Listens for the emit of createMessage from the client..
-    socket.on('createMessage', function(message){
-        console.log('New message', message); 
+    socket.on('createMessage', function(message, callback){
+        console.log('Created message ', message); 
            
         // Send out emit of newMessage to the client..
         io.emit('newMessage', generateMessage(message.from, message.text));
+        
+        //Sends data to callback on client side
+        callback('This is from the server');
+        
         
         // Specifies who receives emit.
         // socket.broadcast.emit('newMessage', {
