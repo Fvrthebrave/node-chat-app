@@ -17,14 +17,14 @@ app.use(express.static(publicPath));
 io.on('connection', function(socket){
     console.log('New user connected');
     
-    socket.emit('newMessage', {
-        from: 'Collin',
-        text: 'Hey!',
-        createdAt: 123123
-    });
-    
+    // Listens for the emit of createMessage from the client..
     socket.on('createMessage', function(message){
        console.log('New message', message); 
+       io.emit('newMessage', {
+          from: message.from,
+          text: message.text,
+          createdAt: new Date().getTime()
+       });
     });
     
     socket.on('disconnect', function(){
@@ -32,6 +32,6 @@ io.on('connection', function(socket){
     });
 });
 
-server.listen(port, function(){
+server.listen(port, process.env.IP, function(){
    console.log(`Server is listening on ${port}`); 
 });
