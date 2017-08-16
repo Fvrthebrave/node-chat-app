@@ -10,19 +10,23 @@ socket.on('disconnect', function(){
 
 // Listens for the emit of newMessage from the server..
 socket.on('newMessage', function(message){
+    var template = $('#message-template').html();
+    var html = Mustache.render(template);
     
-    // Format value provided by generateMessage function..
-    var formattedTime = moment(message.createdAt).format('MMMM Do, YYYY (h:mm a)');
+    $('#messages').append(html);
     
-    // Add list item containing message details to screen
-    var li = $('<li></li>');
-    var span = $('<span class="date"></span>');
-    li.text(`${message.from}: ${message.text}`);
-    span.text(`Sent: ${formattedTime}`);
+    // // Format value provided by generateMessage function..
+    // var formattedTime = moment(message.createdAt).format('MMMM Do, YYYY (h:mm a)');
     
-    // Add new list item and it's children to the message section..
-    li.append(span);
-    $('#messages').append(li);
+    // // Add list item containing message details to screen
+    // var li = $('<li></li>');
+    // var span = $('<span class="date"></span>');
+    // li.text(`${message.from}: ${message.text}`);
+    // span.text(`Sent: ${formattedTime}`);
+    
+    // // Add new list item and it's children to the message section..
+    // li.append(span);
+    // $('#messages').append(li);
 });
 
 // Listens for the emit of newLocation message from the server..
