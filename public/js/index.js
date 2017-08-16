@@ -5,14 +5,30 @@ function scrollToBottom() {
     var messages = $('#messages');
     var newMessage = messages.children('li:last-child');
     
-    // Heights
+    /* 
+        We need to take into account the clients view height,
+        the distance scrolled, the height if the incoming message,
+        and the height of the previous message in order to autoscroll
+        when user is at the bottom of the page. 
+    */
+    
+    // Height of the client's messages container view
     var clientHeight = messages.prop('clientHeight');
+    
+    // Number of pixels scrolled vertically
     var scrollTop = messages.prop('scrollTop');
+    
+    // Height of the scroll bar after new message is added.
     var scrollHeight = messages.prop('scrollHeight');
+    
+    // Height of the incoming message
     var newMessageHeight = newMessage.innerHeight();
+    
+    // Height of the message previous to the new message
     var lastMessageHeight = newMessage.prev().innerHeight();
     
-    if(clientHeight + scrollTop + newMessageHeight + lastMessageHeight >= scrollHeight) {
+
+    if(clientHeight + scrollTop + newMessageHeight >= scrollHeight) {
         messages.scrollTop(scrollHeight);
     }
 }
