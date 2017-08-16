@@ -1,4 +1,21 @@
 var socket = io();
+
+function scrollToBottom() {
+    // Selectors
+    var messages = $('#messages');
+    var newMessage = messages.children('li:last-child');
+    
+    // Heights
+    var clientHeight = messages.prop('clientHeight');
+    var scrollTop = messages.prop('scrollTop');
+    var scrollHeight = messages.prop('scrollHeight');
+    var newMessageHeight = newMessage.innerHeight();
+    var lastMessageHeight = newMessage.prev().innerHeight();
+    
+    if(clientHeight + scrollTop + newMessageHeight + lastMessageHeight >= scrollHeight) {
+        messages.scrollTop(scrollHeight);
+    }
+}
             
 socket.on('connect', function(){
     console.log('Connected to server');
@@ -10,10 +27,16 @@ socket.on('disconnect', function(){
 
 // Listens for the emit of newMessage from the server..
 socket.on('newMessage', function(message){
+    var formattedTime = moment(message.createdAt).format('MMMM Do, YYYY (h:mm a)');
     var template = $('#message-template').html();
-    var html = Mustache.render(template);
+    var html = Mustache.render(template, {
+        from: message.from,
+        text: message.text,
+        createdAt: formattedTime
+    });
     
     $('#messages').append(html);
+    scrollToBottom();
     
     // // Format value provided by generateMessage function..
     // var formattedTime = moment(message.createdAt).format('MMMM Do, YYYY (h:mm a)');
@@ -31,17 +54,26 @@ socket.on('newMessage', function(message){
 
 // Listens for the emit of newLocation message from the server..
 socket.on('newLocationMessage', function (message){
-    
-    // Format value provided by generateLocationMessage function..
     var formattedTime = moment(message.createdAt).format('MMMM Do, YYYY (h:mm a)');
+    var template = $('#location-message-template').html();
+    var html = Mustache.render(template, {
+        from: message.from,
+        url: message.url,
+        createdAt: formattedTime
+    });
     
-    var li = $('<li></li>');
-    var a = $('<a target="_blank">My current location</a>');
-    var span = $('<span class="date"></span>');
+    $('#messages').append(html);
     
-    li.text(`${message.from}: `);
-    a.attr('href', message.url);
-    span.text(`Sent: ${formattedTime}`);
+    // // Format value provided by generateLocationMessage function..
+    // var formattedTime = moment(message.createdAt).format('MMMM Do, YYYY (h:mm a)');
+    
+    // var li = $('<li></li>');
+    // var a = $('<a target="_blank">My current location</a>');
+    // var span = $('<span class="date"></span>');
+    
+    // li.text(`${message.from}: `);
+    // a.attr('href', message.url);
+    // span.text(`Sent: ${formattedTime}`);
     
     
     // Add new list item and it's children to the message section..
