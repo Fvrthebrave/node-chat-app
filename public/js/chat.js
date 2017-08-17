@@ -28,7 +28,7 @@ function scrollToBottom() {
     var lastMessageHeight = newMessage.prev().innerHeight();
     
 
-    if(clientHeight + scrollTop + newMessageHeight >= scrollHeight) {
+    if(clientHeight + scrollTop + newMessageHeight +lastMessageHeight >= scrollHeight) {
         messages.scrollTop(scrollHeight);
     }
 }
@@ -44,13 +44,18 @@ socket.on('disconnect', function(){
 // Listens for the emit of newMessage from the server..
 socket.on('newMessage', function(message){
     var formattedTime = moment(message.createdAt).format('MMMM Do, YYYY (h:mm a)');
+    
+    // template will be the html content within the #message-template
     var template = $('#message-template').html();
+    
+    // html is then placed into our template and rendered to the message section.
     var html = Mustache.render(template, {
         from: message.from,
         text: message.text,
         createdAt: formattedTime
     });
     
+    // Scroll to bottom of chat if user is not scrolled up
     $('#messages').append(html);
     scrollToBottom();
     
